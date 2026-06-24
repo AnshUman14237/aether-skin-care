@@ -125,7 +125,7 @@ body, p, a, button, input, select, textarea, .nav-link-item, .cta-btn, .checkout
     margin: 20px 0;
 }
 
-@media(max-width: 1100px) {
+@media(max-width: 1200px) {
     .side-gutter {
         display: none;
     }
@@ -2903,5 +2903,16 @@ input,
 .drawer-product-card,
 .apothecary-badge {
     border-radius: 0 !important;
+}
+
+/* Performance Speed Optimizations (content-visibility for fast rendering) */
+#showcase, 
+#scanner-section, 
+#slider-section, 
+#ingredients, 
+#ritual-section,
+.site-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
 }
 
