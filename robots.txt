@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Exclude checkout, cart, and account management from crawler index
+Disallow: /checkout
+Disallow: /cart
+Disallow: /account
+Disallow: /admin
+Disallow: /api/
+Disallow: /*?*checkout
+Disallow: /*?*cart
+
+# Sitemap location
+Sitemap: https://aetherskin.com/sitemap.xml
