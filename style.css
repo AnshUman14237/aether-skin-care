@@ -2973,7 +2973,7 @@ input:focus-visible,
 
 @media(min-width: 992px) {
     .collection-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 24px;
     }
 }
@@ -3006,15 +3006,33 @@ input:focus-visible,
     border-bottom: 1px solid var(--color-border);
 }
 
+/* Staggered Smooth Floating Keyframes */
+@keyframes float {
+    0% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-8px) scale(1.02); }
+    100% { transform: translateY(0px) scale(1); }
+}
+
 .product-card-img {
     max-width: 75%;
     height: auto;
     object-fit: contain;
     transition: transform 0.8s var(--ease-luxury);
+    animation: float 6s ease-in-out infinite;
 }
 
+/* Staggered animation delays to feel organic and fluid */
+.product-card[data-product-id="cleanser"] .product-card-img { animation-delay: 0s; }
+.product-card[data-product-id="toner"] .product-card-img { animation-delay: 1.2s; }
+.product-card[data-product-id="serum"] .product-card-img { animation-delay: 2.4s; }
+.product-card[data-product-id="cream"] .product-card-img { animation-delay: 3.6s; }
+.product-card[data-product-id="duo"] .product-card-img { animation-delay: 4.8s; }
+.product-card[data-product-id="ritual_set"] .product-card-img { animation-delay: 6s; }
+
+/* Pause bobbing and scale up on card hover */
 .product-card:hover .product-card-img {
-    transform: scale(1.08);
+    animation-play-state: paused;
+    transform: scale(1.08) translateY(-4px);
 }
 
 .product-card-number {
@@ -3066,6 +3084,39 @@ input:focus-visible,
     flex-grow: 1;
 }
 
+/* Pricing Toggle Tabs on Cards */
+.price-toggle-group {
+    display: flex;
+    border: 1px solid var(--color-border);
+    margin-bottom: 20px;
+    background-color: rgba(197, 160, 89, 0.03);
+}
+
+.price-toggle-tab {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 0;
+    text-align: center;
+    color: var(--color-text-secondary);
+    transition: all 0.4s var(--ease-luxury);
+    cursor: pointer;
+}
+
+.price-toggle-tab.active {
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-canvas);
+}
+
+.price-toggle-tab:not(.active):hover {
+    color: var(--color-text-primary);
+    background-color: rgba(197, 160, 89, 0.08);
+}
+
+/* Price Row Display */
 .product-card-purchase {
     display: flex;
     align-items: center;
@@ -3075,11 +3126,31 @@ input:focus-visible,
     border-top: 1px solid rgba(197, 160, 89, 0.08);
 }
 
+.product-price-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .product-card-price {
     font-family: var(--font-mono);
     font-size: 1.05rem;
     font-weight: 600;
     color: var(--color-text-primary);
+}
+
+.product-card-savings-badge {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: var(--color-bg-canvas);
+    background-color: var(--color-accent-gold-dark);
+    padding: 1px 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    align-self: flex-start;
+    display: inline-block;
+    transition: all 0.3s var(--ease-luxury);
 }
 
 .product-card-cta-btn {
@@ -3132,6 +3203,9 @@ input,
 .drawer-product-card,
 .product-card,
 .product-card-cta-btn,
+.price-toggle-group,
+.price-toggle-tab,
+.product-card-savings-badge,
 .apothecary-badge {
     border-radius: 0 !important;
 }

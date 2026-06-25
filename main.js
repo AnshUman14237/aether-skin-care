@@ -123,6 +123,36 @@ const PRODUCTS_DATA = {
             2: { cycle: "Every 45 Days", savings: "$12.75 (15% Off)", price: "$72.25", score: 75, offset: 0.75, aura: 0.62, priceNum: 72.25 },
             3: { cycle: "Every 60 Days", savings: "$8.50 (10% Off)", price: "$76.50", score: 52, offset: 0.52, aura: 0.32, priceNum: 76.50 }
         }
+    },
+    duo: {
+        name: "The Hydration Duo",
+        volume: "130ml total",
+        category: "Curated Cellular Hydration Duo",
+        priceOneTime: 135.00,
+        priceSubscription: 108.00,
+        image: "assets/hydration_duo.png",
+        imageWebp: "assets/hydration_duo.png",
+        desc: "Maximize deep active dermal moisture. Curated combination of Osmotic Primer and flagship Serum builds a continuous cellular hydration curve.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$27.00 (20% Off)", price: "$108.00", score: 99, offset: 0.99, aura: 1.10, priceNum: 108.00 },
+            2: { cycle: "Every 45 Days", savings: "$20.25 (15% Off)", price: "$114.75", score: 80, offset: 0.80, aura: 0.70, priceNum: 114.75 },
+            3: { cycle: "Every 60 Days", savings: "$13.50 (10% Off)", price: "$121.50", score: 58, offset: 0.58, aura: 0.40, priceNum: 121.50 }
+        }
+    },
+    ritual_set: {
+        name: "The Complete Ritual Set",
+        volume: "330ml total",
+        category: "Ultimate Skincare Ritual System",
+        priceOneTime: 270.00,
+        priceSubscription: 216.00,
+        image: "assets/complete_ritual.png",
+        imageWebp: "assets/complete_ritual.png",
+        desc: "Experience complete laboratory cellular cycle renewal. The ultimate skincare system containing cleanser, primer, serum, and barrier seal.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$54.00 (20% Off)", price: "$216.00", score: 100, offset: 1.00, aura: 1.20, priceNum: 216.00 },
+            2: { cycle: "Every 45 Days", savings: "$40.50 (15% Off)", price: "$229.50", score: 85, offset: 0.85, aura: 0.75, priceNum: 229.50 },
+            3: { cycle: "Every 60 Days", savings: "$27.00 (10% Off)", price: "$243.00", score: 62, offset: 0.62, aura: 0.45, priceNum: 243.00 }
+        }
     }
 };
 
@@ -235,7 +265,50 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuraCursor();
     initCheckoutModal();
     initScrollSpy();
+    initProductCardToggles();
 });
+
+/* ==========================================================================
+   AETHER PRODUCT CARD PRICING TOGGLE MODULE
+   ========================================================================== */
+function initProductCardToggles() {
+    const cardToggles = document.querySelectorAll('.price-toggle-tab');
+    cardToggles.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const mode = tab.getAttribute('data-pricing-mode');
+            const parentGroup = tab.closest('.price-toggle-group');
+            const productId = parentGroup.getAttribute('data-product-id');
+            const parentCard = tab.closest('.product-card');
+            
+            // Set active tab class
+            parentGroup.querySelectorAll('.price-toggle-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Update Card Price and Savings Display
+            const prodData = PRODUCTS_DATA[productId];
+            if (!prodData) return;
+
+            const priceEl = parentCard.querySelector('.product-card-price');
+            const savingsBadge = parentCard.querySelector('.product-card-savings-badge');
+            
+            if (mode === 'subscribe') {
+                priceEl.innerText = `$${prodData.priceSubscription.toFixed(2)}`;
+                if (savingsBadge) savingsBadge.style.display = 'inline-block';
+                parentCard.setAttribute('data-active-mode', 'subscribe');
+            } else {
+                priceEl.innerText = `$${prodData.priceOneTime.toFixed(2)}`;
+                if (savingsBadge) savingsBadge.style.display = 'none';
+                parentCard.setAttribute('data-active-mode', 'onetime');
+            }
+            
+            // Play positive feedback chime
+            playSynthTone(400 + Math.random() * 150, 0.08, 'sine', 0.05);
+        });
+    });
+}
 
 /* ==========================================================================
    INTERSECTION OBSERVER FOR LAZY-LOADING MODULES
@@ -1673,14 +1746,23 @@ function initSubscriptionDrawer() {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const productId = btn.getAttribute('data-product-id');
-            loadProductIntoDrawer(productId);
-            overlay.classList.add('active');
-            drawer.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            updateSavingsVisuals(parseInt(sliderInput.value));
+            const parentCard = btn.closest('.product-card');
+            const activeMode = parentCard ? parentCard.getAttribute('data-active-mode') || 'subscribe' : 'subscribe';
             
-            // Play slide open tone
-            playSynthTone(280 + Math.random() * 40, 0.15, 'sine', 0.1);
+            if (activeMode === 'onetime') {
+                // Set active product and open checkout directly
+                currentDrawerProductId = productId;
+                openCheckout(false);
+            } else {
+                loadProductIntoDrawer(productId);
+                overlay.classList.add('active');
+                drawer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                updateSavingsVisuals(parseInt(sliderInput.value));
+                
+                // Play slide open tone
+                playSynthTone(280 + Math.random() * 40, 0.15, 'sine', 0.1);
+            }
         });
     });
 

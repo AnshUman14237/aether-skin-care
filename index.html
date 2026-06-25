@@ -236,6 +236,96 @@
           }
         },
         {
+          "@type": "Product",
+          "@id": "https://aetherskin.com/#duo",
+          "name": "The Hydration Duo",
+          "image": [
+            "https://aetherskin.com/assets/hydration_duo.png"
+          ],
+          "description": "A luxury curated pairing of Hydration Primer and flagship Aether Active Serum. Designed to work in perfect harmony to lock in deep hydration.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Aether"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "USD",
+            "lowPrice": "108.00",
+            "highPrice": "135.00",
+            "offerCount": "2",
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "The Hydration Duo - One-time Purchase",
+                "price": "135.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "url": "https://aetherskin.com/#purchase"
+              },
+              {
+                "@type": "Offer",
+                "name": "The Hydration Duo - Glow Membership Subscription",
+                "price": "108.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "url": "https://aetherskin.com/#subscription"
+              }
+            ]
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "64",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://aetherskin.com/#ritual_set",
+          "name": "The Complete Ritual Set",
+          "image": [
+            "https://aetherskin.com/assets/complete_ritual.png"
+          ],
+          "description": "The complete Aether laboratory layering ritual system containing all four steps: Purifying Emulsion, Hydration Primer, Aether Active Serum, and Lipid Seal Cream.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Aether"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "USD",
+            "lowPrice": "216.00",
+            "highPrice": "270.00",
+            "offerCount": "2",
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "The Complete Ritual Set - One-time Purchase",
+                "price": "270.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "url": "https://aetherskin.com/#purchase"
+              },
+              {
+                "@type": "Offer",
+                "name": "The Complete Ritual Set - Glow Membership Subscription",
+                "price": "216.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "url": "https://aetherskin.com/#subscription"
+              }
+            ]
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "reviewCount": "48",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
           "@type": "FAQPage",
           "@id": "https://aetherskin.com/#faq",
           "mainEntity": [
@@ -629,7 +719,7 @@
                     <span class="section-label">[ 04.5 // THE CELLULAR SYSTEM ]</span>
                     <h2 class="section-title">The Ritual Collection</h2>
                     <p class="section-description">
-                        Four synergistically engineered formulations designed to function as a complete cellular hydration cycle. Fused with alpine actives and bio-mimetic lipid systems.
+                        Six synergistically engineered formulations designed to function as a complete cellular hydration cycle. Fused with alpine actives and bio-mimetic lipid systems.
                     </p>
                 </div>
                 <div class="collection-grid">
@@ -650,8 +740,15 @@
                             <p class="product-card-desc">
                                 A milk-to-gel prebiotic cleanser that breaks down environmental particles and lipids without depleting the natural moisture barrier.
                             </p>
+                            <div class="price-toggle-group" data-product-id="cleanser">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
                             <div class="product-card-purchase">
-                                <span class="product-card-price">$65.00</span>
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$52.00</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
                                 <button class="product-card-cta-btn" data-product-id="cleanser">Select Product</button>
                             </div>
                         </div>
@@ -674,8 +771,15 @@
                             <p class="product-card-desc">
                                 An osmotic balancing treatment mist infused with Alpine Algae. Recharges cellular water channels and maximizes downstream serum absorption.
                             </p>
+                            <div class="price-toggle-group" data-product-id="toner">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
                             <div class="product-card-purchase">
-                                <span class="product-card-price">$58.00</span>
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$46.40</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
                                 <button class="product-card-cta-btn" data-product-id="toner">Select Product</button>
                             </div>
                         </div>
@@ -685,7 +789,6 @@
                     <div class="product-card" data-product-id="serum">
                         <div class="product-card-visual">
                             <picture>
-                                <source srcset="assets/hero_product.webp" type="image/webp">
                                 <img src="assets/hero_product.png" alt="Aether Active Serum" class="product-card-img" width="400" height="400" loading="lazy">
                             </picture>
                             <span class="product-card-number">03</span>
@@ -697,10 +800,17 @@
                             </div>
                             <h3 class="product-card-title">Aether Active Serum</h3>
                             <p class="product-card-desc">
-                                The ultimate active core. Delivers cross-linked hyaluronic spheres and Squalane Gold deep into the dermis for instant plumping.
+                                The flagship active core. Delivers cross-linked hyaluronic spheres and Squalane Gold deep into the dermis for intense hydration.
                             </p>
+                            <div class="price-toggle-group" data-product-id="serum">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
                             <div class="product-card-purchase">
-                                <span class="product-card-price">$90.00</span>
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$72.00</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
                                 <button class="product-card-cta-btn" data-product-id="serum">Select Product</button>
                             </div>
                         </div>
@@ -723,9 +833,78 @@
                             <p class="product-card-desc">
                                 A bio-mimetic lipid matrix that mimics the natural skin barrier. Locks in botanical actives and prevents trans-epidermal water loss.
                             </p>
+                            <div class="price-toggle-group" data-product-id="cream">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
                             <div class="product-card-purchase">
-                                <span class="product-card-price">$85.00</span>
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$68.00</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
                                 <button class="product-card-cta-btn" data-product-id="cream">Select Product</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 5: Hydration Duo -->
+                    <div class="product-card" data-product-id="duo">
+                        <div class="product-card-visual">
+                            <picture>
+                                <img src="assets/hydration_duo.png" alt="The Hydration Duo" class="product-card-img" width="400" height="400" loading="lazy">
+                            </picture>
+                            <span class="product-card-number">05</span>
+                        </div>
+                        <div class="product-card-info">
+                            <div class="product-card-meta">
+                                <span class="product-spec">PH 5.5</span>
+                                <span class="product-spec">130ML TOTAL</span>
+                            </div>
+                            <h3 class="product-card-title">The Hydration Duo</h3>
+                            <p class="product-card-desc">
+                                Curated pairing of Hydration Primer and flagship Aether Active Serum. Works in tandem to prime skin and infuse deep moisture.
+                            </p>
+                            <div class="price-toggle-group" data-product-id="duo">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
+                            <div class="product-card-purchase">
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$108.00</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
+                                <button class="product-card-cta-btn" data-product-id="duo">Select Product</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 6: Complete Ritual Set -->
+                    <div class="product-card" data-product-id="ritual_set">
+                        <div class="product-card-visual">
+                            <picture>
+                                <img src="assets/complete_ritual.png" alt="The Complete Ritual Set" class="product-card-img" width="400" height="400" loading="lazy">
+                            </picture>
+                            <span class="product-card-number">06</span>
+                        </div>
+                        <div class="product-card-info">
+                            <div class="product-card-meta">
+                                <span class="product-spec">RITUAL</span>
+                                <span class="product-spec">330ML TOTAL</span>
+                            </div>
+                            <h3 class="product-card-title">The Complete Ritual Set</h3>
+                            <p class="product-card-desc">
+                                The ultimate Aether laboratory system. Contains all four steps (Cleanser, Primer, Serum, Cream) for absolute cellular cycle renewal.
+                            </p>
+                            <div class="price-toggle-group" data-product-id="ritual_set">
+                                <button class="price-toggle-tab active" data-pricing-mode="subscribe">Subscribe</button>
+                                <button class="price-toggle-tab" data-pricing-mode="onetime">One-Time</button>
+                            </div>
+                            <div class="product-card-purchase">
+                                <div class="product-price-display">
+                                    <span class="product-card-price">$216.00</span>
+                                    <span class="product-card-savings-badge">Save 20%</span>
+                                </div>
+                                <button class="product-card-cta-btn" data-product-id="ritual_set">Select Product</button>
                             </div>
                         </div>
                     </div>
