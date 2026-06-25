@@ -28,7 +28,7 @@ AETHER LUXURY DESIGN SYSTEM - BRAND CONFIGURATION & SCHEME
     --color-bg-surface: #ffffff;        /* Pure white surface */
     --color-bg-container: #f5ede4;      /* Light cream container */
     --color-text-primary: #1e1b16;      /* Rich charcoal primary text */
-    --color-text-secondary: #63635f;    /* Muted gray for secondary copy */
+    --color-text-secondary: #52524e;    /* Muted dark gray-slate for readable secondary copy */
     
     /* DUAL-GOLD SYSTEM (aligned with Stitch) */
     --color-accent-gold: #c5a059;       /* Delicate gold for highlights, borders, vectors */
@@ -74,7 +74,7 @@ body, p, a, button, input, select, textarea, .nav-link-item, .cta-btn, .checkout
 .section-label {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
     display: block;
     margin-bottom: 16px;
     letter-spacing: 0.25em;
@@ -857,7 +857,7 @@ button {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
     display: block;
     margin-bottom: 16px;
 }
@@ -1060,7 +1060,7 @@ button {
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: 600;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
     margin-bottom: 16px;
     display: block;
 }
@@ -1424,7 +1424,7 @@ button {
 .member-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
 }
 
 .member-perks-list {
@@ -1839,7 +1839,7 @@ button {
 .readout-value {
     font-family: var(--font-serif);
     font-size: 1.8rem;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
     font-weight: 400;
 }
 
@@ -1990,7 +1990,7 @@ button {
 .ritual-card-index {
     font-family: var(--font-serif);
     font-size: 1.3rem;
-    color: var(--color-accent-gold);
+    color: var(--color-accent-gold-dark);
     font-weight: 500;
 }
 
