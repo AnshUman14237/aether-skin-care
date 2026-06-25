@@ -332,6 +332,7 @@ function initLazyLoading() {
 
     lazyLoad('hero', initHeroShader);
     lazyLoad('showcase', initThreeJSShowcase);
+    lazyLoad('cream-showcase', initCreamShowcase);
     lazyLoad('slider-section', initWebGLSlider);
     lazyLoad('ingredients', initSoftBodyIngredients);
     lazyLoad('scanner-section', initDermalScanner);
@@ -981,6 +982,403 @@ function initThreeJSShowcase() {
             bottleGroup.scale.set(scale, scale, scale);
         } else {
             bottleGroup.scale.set(1.0, 1.0, 1.0);
+        }
+    }
+    adjustScale();
+
+    window.addEventListener('resize', () => {
+        width = container.clientWidth;
+        height = container.clientHeight;
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize(width, height);
+        adjustScale();
+    });
+}
+
+/* ==========================================================================
+   3b. 3D CREAM PRODUCT SHOWCASE MODULE (Three.js Scroll Exploded Jar)
+   ========================================================================== */
+function initCreamShowcase() {
+    const container = document.getElementById('creamThreeContainer');
+    const loader = document.getElementById('creamShowcaseLoader');
+    if (!container) return;
+
+    if (typeof THREE === 'undefined') {
+        console.warn('Three.js not loaded. Hiding 3D cream features.');
+        if (loader) loader.style.opacity = '0';
+        return;
+    }
+
+    // Dimensions
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+
+    // Create scene, camera, and WebGL renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0, 8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    // Hide loader
+    if (loader) loader.style.opacity = '0';
+
+    // Ambient Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    scene.add(ambientLight);
+
+    // Soft Studio Lights
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight1.position.set(5, 5, 5);
+    scene.add(dirLight1);
+
+    // Create the Procedural Premium Cream Jar Group
+    const jarGroup = new THREE.Group();
+    scene.add(jarGroup);
+
+    // Helper to generate dynamic premium label texture
+    function createCreamLabelTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        
+        // Deep charcoal paper background (to match the dark lab theme)
+        ctx.fillStyle = '#121418'; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Double gold fine border inset
+        ctx.strokeStyle = '#c5a059'; 
+        ctx.lineWidth = 4;
+        ctx.strokeRect(16, 16, canvas.width - 32, canvas.height - 32);
+        
+        ctx.strokeStyle = 'rgba(197, 160, 89, 0.35)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(22, 22, canvas.width - 44, canvas.height - 44);
+
+        // Brand name: A E T H E R
+        ctx.fillStyle = '#FCFAF7';
+        ctx.font = '300 46px "Bodoni Moda", Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const brand = "AETHER";
+        const startX = canvas.width / 2 - (brand.length - 1) * 22;
+        for (let i = 0; i < brand.length; i++) {
+            ctx.fillText(brand[i], startX + i * 44, 120);
+        }
+
+        // Subtitle: LIPID SEAL MATRIX
+        ctx.font = '600 11px "IBM Plex Mono", monospace';
+        ctx.fillStyle = '#c5a059';
+        const sub = "LIPID SEAL MATRIX";
+        const startXSub = canvas.width / 2 - (sub.length - 1) * 5.5;
+        for (let i = 0; i < sub.length; i++) {
+            ctx.fillText(sub[i], startXSub + i * 11, 175);
+        }
+
+        // Elegant Divider Line
+        ctx.beginPath();
+        ctx.moveTo(100, 215);
+        ctx.lineTo(412, 215);
+        ctx.strokeStyle = 'rgba(197, 160, 89, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Product Focus
+        ctx.fillStyle = '#FCFAF7';
+        ctx.font = 'italic 30px "Bodoni Moda", Georgia, serif';
+        ctx.fillText('Lipid Seal Cream', canvas.width / 2, 260);
+
+        // Active description
+        ctx.font = '500 10px "DM Sans", sans-serif';
+        ctx.fillStyle = '#a19e95';
+        ctx.fillText('SQUALANE + ACTIVE BARRIER LIPIDS', canvas.width / 2, 305);
+        ctx.fillText('72H TRANS-EPIDERMAL SHIELD', canvas.width / 2, 325);
+
+        ctx.font = 'italic 300 11px "Bodoni Moda", Georgia, serif';
+        ctx.fillText('Dermatologically tested. Certified organic.', canvas.width / 2, 360);
+
+        // Bottom section divider
+        ctx.beginPath();
+        ctx.moveTo(160, 395);
+        ctx.lineTo(352, 395);
+        ctx.strokeStyle = 'rgba(197, 160, 89, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Specs info
+        ctx.font = '600 11px "IBM Plex Mono", monospace';
+        ctx.fillStyle = '#FCFAF7';
+        ctx.fillText('e 50ML  1.7 FL. OZ.', canvas.width / 2, 435);
+
+        ctx.font = '300 9px "IBM Plex Mono", monospace';
+        ctx.fillStyle = '#a19e95';
+        ctx.fillText('BATCH 06.26  |  MADE IN SWITZERLAND', canvas.width / 2, 465);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+    }
+
+    // Materials definition (Translucent Amber Glass, Matte Black Lid, Opaque Cream)
+    const jarGlassMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xcc6633, // rich warm amber
+        transparent: true,
+        opacity: 0.45,
+        roughness: 0.08,
+        metalness: 0.05,
+        transmission: 0.85,
+        ior: 1.52,
+        thickness: 0.4,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+        side: THREE.DoubleSide
+    });
+
+    const lidMaterial = new THREE.MeshStandardMaterial({
+        color: 0x1a1a1a, // Matte black
+        roughness: 0.8,
+        metalness: 0.2,
+        side: THREE.DoubleSide
+    });
+
+    const goldAccentMaterial = new THREE.MeshStandardMaterial({
+        color: 0xD4AF37, // Metallic gold thread/ring
+        roughness: 0.2,
+        metalness: 0.9,
+        side: THREE.DoubleSide
+    });
+
+    const creamMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xfcfbfa, // Pure soft off-white cream
+        transparent: true,
+        opacity: 0.95,
+        roughness: 0.55,
+        metalness: 0.02,
+        clearcoat: 0.25
+    });
+
+    // 1. Jar Body (Amber Glass Tube)
+    const jarBodyGeom = new THREE.CylinderGeometry(1.2, 1.2, 1.4, 64, 1, true);
+    const jarBody = new THREE.Mesh(jarBodyGeom, jarGlassMaterial);
+    
+    // Base glass cap
+    const jarBaseGeom = new THREE.CylinderGeometry(1.2, 1.2, 0.15, 64);
+    const jarBase = new THREE.Mesh(jarBaseGeom, jarGlassMaterial);
+    jarBase.position.y = -0.7;
+    jarBody.add(jarBase);
+
+    // Front-facing Brand Label Mesh (wraps around 126 degrees of the front)
+    const labelGeom = new THREE.CylinderGeometry(1.202, 1.202, 0.9, 64, 1, true, -Math.PI * 0.35, Math.PI * 0.7);
+    const labelMaterial = new THREE.MeshPhysicalMaterial({
+        map: createCreamLabelTexture(),
+        roughness: 0.65,
+        metalness: 0.05,
+        clearcoat: 0.1,
+        side: THREE.DoubleSide
+    });
+    const labelMesh = new THREE.Mesh(labelGeom, labelMaterial);
+    labelMesh.position.y = -0.1;
+    jarBody.add(labelMesh);
+    
+    jarGroup.add(jarBody);
+
+    // 2. Cream Content (Opaque white cylinder)
+    const creamGeom = new THREE.CylinderGeometry(1.08, 1.08, 1.0, 32);
+    const creamMesh = new THREE.Mesh(creamGeom, creamMaterial);
+    creamMesh.position.y = -0.15;
+    jarGroup.add(creamMesh);
+
+    // 3. Jar Lid Group (Matte black cap with gold thread accent ring)
+    const lidGroup = new THREE.Group();
+    
+    const lidGeom = new THREE.CylinderGeometry(1.25, 1.25, 0.3, 64);
+    const lidMesh = new THREE.Mesh(lidGeom, lidMaterial);
+    lidGroup.add(lidMesh);
+    
+    const threadGeom = new THREE.CylinderGeometry(1.15, 1.15, 0.1, 64);
+    const threadMesh = new THREE.Mesh(threadGeom, goldAccentMaterial);
+    threadMesh.position.y = -0.2;
+    lidGroup.add(threadMesh);
+    
+    lidGroup.position.y = 0.85; // Resting position
+    jarGroup.add(lidGroup);
+
+    // 4. Floating active lipid particles (revealed on scroll)
+    const particleCount = 20;
+    const particles = [];
+    const particlePositions = [];
+    
+    const activeGoldMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xD4AF37,
+        metalness: 0.85,
+        roughness: 0.15,
+        clearcoat: 1.0,
+        transparent: true,
+        opacity: 0.95
+    });
+
+    const activeWhiteMaterial = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        metalness: 0.1,
+        roughness: 0.2,
+        clearcoat: 0.8,
+        transparent: true,
+        opacity: 0.9
+    });
+
+    for (let i = 0; i < particleCount; i++) {
+        const isGold = Math.random() > 0.45;
+        const geom = new THREE.SphereGeometry(0.08 + Math.random() * 0.1, 16, 16);
+            
+        const mesh = new THREE.Mesh(geom, isGold ? activeGoldMaterial : activeWhiteMaterial);
+        
+        // Initial nested position inside the cream
+        mesh.position.set(
+            (Math.random() - 0.5) * 1.2,
+            -0.1 + (Math.random() - 0.5) * 0.4,
+            (Math.random() - 0.5) * 1.2
+        );
+        mesh.scale.set(0.01, 0.01, 0.01); // Start hidden
+        
+        // Final scattered positions floating upwards and outwards
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 1.4 + Math.random() * 2.0;
+        const targetX = Math.cos(angle) * radius;
+        const targetY = 1.0 + Math.random() * 2.8; // Upwards
+        const targetZ = (Math.random() - 0.5) * 2.0;
+
+        particles.push(mesh);
+        particlePositions.push({
+            startX: mesh.position.x,
+            startY: mesh.position.y,
+            startZ: mesh.position.z,
+            endX: targetX,
+            endY: targetY,
+            endZ: targetZ,
+            rotSpeedX: (Math.random() - 0.5) * 0.02,
+            rotSpeedY: (Math.random() - 0.5) * 0.02
+        });
+        
+        scene.add(mesh);
+    }
+
+    // Positions for overall group positioning
+    jarGroup.position.set(0.3, 0.0, 0); // slightly offset to offset the visual weight
+    jarGroup.rotation.set(0.15, -0.2, 0.0);
+
+    // GSAP Scroll Animation timeline
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: '.cream-showcase-section',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.2,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                animateCreamDisassembly(progress);
+                updateCreamNarrativeSteps(progress);
+            }
+        }
+    });
+
+    // Smooth Disassembly interpolation function
+    function animateCreamDisassembly(p) {
+        const pEased = gsap.parseEase('power2.inOut')(p);
+
+        // Cap rotates/unscrews and floats upwards
+        lidGroup.position.y = 0.85 + pEased * 2.4;
+        lidGroup.rotation.y = pEased * Math.PI * 3.5;
+        
+        // Jar body goes down slightly
+        jarBody.position.y = -pEased * 0.7;
+        creamMesh.position.y = -0.15 - pEased * 1.1;
+        
+        // Cream material transparency/fade
+        creamMaterial.opacity = 0.95 - pEased * 0.35;
+
+        // Disperse floating lipid droplets
+        particles.forEach((mesh, index) => {
+            const pos = particlePositions[index];
+            
+            // Interpolate position
+            mesh.position.x = THREE.MathUtils.lerp(pos.startX, pos.endX, pEased);
+            mesh.position.y = THREE.MathUtils.lerp(pos.startY, pos.endY, pEased);
+            mesh.position.z = THREE.MathUtils.lerp(pos.startZ, pos.endZ, pEased);
+            
+            // Scale up particles when they escape
+            const scaleVal = THREE.MathUtils.lerp(0.01, 1.0, Math.min(pEased * 2.5, 1.0));
+            mesh.scale.set(scaleVal, scaleVal, scaleVal);
+        });
+
+        // Rotate group dynamically with scroll velocity
+        jarGroup.rotation.y = -0.2 + p * Math.PI * 0.6;
+        jarGroup.rotation.x = 0.15 + p * 0.15;
+    }
+
+    // Narrative active markers handler
+    function updateCreamNarrativeSteps(p) {
+        const steps = document.querySelectorAll('[data-cream-step]');
+        let activeIdx = 0;
+        
+        if (p > 0.72) {
+            activeIdx = 2;
+        } else if (p > 0.35) {
+            activeIdx = 1;
+        } else {
+            activeIdx = 0;
+        }
+
+        steps.forEach((step, idx) => {
+            if (idx === activeIdx) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+    }
+
+    // Simple Render Loop for ambient rotations
+    let clock = new THREE.Clock();
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        const elapsed = clock.getElapsedTime();
+        
+        // Gentle hover float when scroll is idle
+        if (!ScrollTrigger.isScrolling) {
+            const floatOffset = Math.sin(elapsed * 1.2) * 0.06;
+            jarGroup.position.y = floatOffset;
+            
+            // Floating particles drift
+            particles.forEach((mesh, index) => {
+                const pos = particlePositions[index];
+                mesh.position.y += Math.sin(elapsed + index) * 0.002;
+                mesh.rotation.x += pos.rotSpeedX;
+                mesh.rotation.y += pos.rotSpeedY;
+            });
+        }
+
+        renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+
+    // Responsive sizing & mobile scale adjustment
+    function adjustScale() {
+        const aspect = width / height;
+        if (aspect < 0.8) {
+            const scale = Math.max(0.65, aspect * 1.1);
+            jarGroup.scale.set(scale, scale, scale);
+        } else {
+            jarGroup.scale.set(1.0, 1.0, 1.0);
         }
     }
     adjustScale();
@@ -2917,6 +3315,7 @@ function initScrollSpy() {
     const sections = [
         { id: 'hero', navId: '#hero' },
         { id: 'showcase', navId: '#showcase' },
+        { id: 'cream-showcase', navId: '#showcase' },
         { id: 'scanner-section', navId: '#showcase' }, // Map scanner to Science
         { id: 'slider-section', navId: '#slider-section' },
         { id: 'ingredients', navId: '#ingredients' },
