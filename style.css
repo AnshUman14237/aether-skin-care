@@ -219,11 +219,23 @@ button {
     border-bottom: 1px solid transparent;
 }
 
+@media(max-width: 768px) {
+    .site-header {
+        padding: 16px var(--spacing-margin-mobile);
+    }
+}
+
 .site-header.scrolled {
     background-color: rgba(18, 20, 24, 0.95);
     backdrop-filter: blur(20px);
     border-bottom-color: var(--color-border);
     padding: 16px var(--spacing-margin-desktop);
+}
+
+@media(max-width: 768px) {
+    .site-header.scrolled {
+        padding: 12px var(--spacing-margin-mobile);
+    }
 }
 
 .header-container {
@@ -342,6 +354,15 @@ button {
 .close-menu-btn:hover {
     transform: rotate(90deg);
     color: var(--color-text-primary);
+}
+
+@media(max-width: 768px) {
+    .close-menu-btn {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 250;
+    }
 }
 
 .nav-links {
@@ -801,6 +822,32 @@ button {
 .narrative-step.active {
     opacity: 1;
     transform: scale(1);
+}
+
+@media(max-width: 768px) {
+    .showcase-narrative {
+        padding: 0;
+        margin-top: 50vh;
+        padding-bottom: 20vh;
+    }
+    .narrative-step {
+        min-height: 50vh;
+        background: rgba(18, 20, 24, 0.82);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(197, 160, 89, 0.15);
+        padding: 32px 24px;
+        margin: 60px 16px;
+        transform: translateY(20px);
+        opacity: 0.2;
+        transition: all 0.6s ease;
+    }
+    .narrative-step.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        border-color: rgba(197, 160, 89, 0.45);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .step-num {
@@ -2123,6 +2170,13 @@ button {
     opacity: 0.6;
     letter-spacing: 0.05em;
 }
+
+@media(max-width: 576px) {
+    .ritual-dashboard {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
 }
 
 /* ==========================================================================
@@ -2946,6 +3000,12 @@ input:focus-visible,
     border-bottom: 1px solid var(--color-border);
 }
 
+@media(max-width: 768px) {
+    .collection-section {
+        padding: 80px var(--spacing-margin-mobile);
+    }
+}
+
 .collection-container {
     max-width: var(--spacing-container-max);
     margin: 0 auto;
@@ -2956,6 +3016,12 @@ input:focus-visible,
     text-align: center;
     max-width: 700px;
     margin: 0 auto 80px;
+}
+
+@media(max-width: 768px) {
+    .collection-header {
+        margin-bottom: 40px;
+    }
 }
 
 .collection-grid {

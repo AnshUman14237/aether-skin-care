@@ -1618,6 +1618,7 @@ function initWebGLSlider() {
 
     const dragMove = (e) => {
         if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
         updateDragPosition(e);
     };
 
@@ -2713,7 +2714,7 @@ function initRitualBuilder() {
     function resizeCurve() {
         curveCanvas.width = curveCanvas.clientWidth;
         curveCanvas.height = curveCanvas.clientHeight;
-        drawDensityCurve([]);
+        updateTimelineAnalytics();
     }
     window.addEventListener('resize', resizeCurve);
     resizeCurve();
