@@ -728,78 +728,73 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
             
-            <!-- Step 1: Order Review -->
+            <!-- Step 1: Checkout Details -->
             <div class="checkout-step active" id="checkoutStep1">
-                <h3 class="checkout-step-title">Order Review</h3>
-                <div class="checkout-summary-box">
-                    <div class="checkout-product-row">
-                        <span class="checkout-product-name" id="summaryProductName">Aether Serum (30ml)</span>
-                        <span class="checkout-product-price" id="summaryProductPrice">$72.00</span>
-                    </div>
-                    <div class="checkout-product-type" id="summaryProductType">Glow Membership (Every 30 Days)</div>
-                    
-                    <div class="checkout-divider"></div>
-                    
-                    <div class="checkout-fee-row">
-                        <span>Shipping</span>
-                        <span class="accent-text">Free (Climate-Controlled)</span>
-                    </div>
-                    <div class="checkout-fee-row">
-                        <span>Estimated Tax</span>
-                        <span id="summaryTax">$5.76</span>
-                    </div>
-                    
-                    <div class="checkout-divider"></div>
-                    
-                    <div class="checkout-total-row">
-                        <span>Total Due</span>
-                        <span class="checkout-total-price" id="summaryTotal">$77.76</span>
+                <h3 class="checkout-step-title">Checkout</h3>
+                <div class="checkout-grid">
+                    <!-- Left Column: Shipping & Payment Form -->
+                    <form class="checkout-form" id="checkoutForm" onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <label for="checkoutName">Name</label>
+                            <input type="text" id="checkoutName" required value="Eleanor Vance" class="checkout-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkoutEmail">Email</label>
+                            <input type="email" id="checkoutEmail" required value="eleanor@aurastudio.com" class="checkout-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkoutAddress">Delivery Address</label>
+                            <input type="text" id="checkoutAddress" required value="123 Aura Boulevard, Zurich, Switzerland" class="checkout-input">
+                        </div>
+                        <div class="form-row-grid">
+                            <div class="form-group">
+                                <label for="checkoutCard">Card Number</label>
+                                <input type="text" id="checkoutCard" required value="4242 4242 4242 4242" class="checkout-input">
+                            </div>
+                            <div class="form-row-subgrid">
+                                <div class="form-group">
+                                    <label for="checkoutExpiry">Expiry</label>
+                                    <input type="text" id="checkoutExpiry" required value="12/28" class="checkout-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="checkoutCvv">CVV</label>
+                                    <input type="text" id="checkoutCvv" required value="123" class="checkout-input">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="checkout-submit-btn" id="checkoutSubmitBtn">
+                            <span>Confirm Demo Order</span>
+                            <span class="material-symbols-outlined">lock</span>
+                        </button>
+                    </form>
+
+                    <!-- Right Column: Order Summary -->
+                    <div class="checkout-summary-box">
+                        <div class="checkout-product-row">
+                            <span class="checkout-product-name" id="summaryProductName">Aether Serum (30ml)</span>
+                            <span class="checkout-product-price" id="summaryProductPrice">$72.00</span>
+                        </div>
+                        <div class="checkout-product-type" id="summaryProductType">Glow Membership (Every 30 Days)</div>
+                        
+                        <div class="checkout-divider"></div>
+                        
+                        <div class="checkout-fee-row">
+                            <span>Shipping</span>
+                            <span class="accent-text">Free (Climate-Controlled)</span>
+                        </div>
+                        <div class="checkout-fee-row">
+                            <span>Estimated Tax</span>
+                            <span id="summaryTax">$5.76</span>
+                        </div>
+                        
+                        <div class="checkout-divider"></div>
+                        
+                        <div class="checkout-total-row">
+                            <span>Total Due</span>
+                            <span class="checkout-total-price" id="summaryTotal">$77.76</span>
+                        </div>
                     </div>
                 </div>
-                
-                <button class="checkout-next-btn" id="checkoutNextBtn">
-                    <span>Continue to Shipping</span>
-                    <span class="material-symbols-outlined">arrow_right_alt</span>
-                </button>
-            </div>
-            
-            <!-- Step 2: Shipping & Payment Form -->
-            <div class="checkout-step" id="checkoutStep2">
-                <h3 class="checkout-step-title">Shipping & Payment</h3>
-                <form class="checkout-form" id="checkoutForm" onsubmit="event.preventDefault();">
-                    <div class="form-group">
-                        <label for="checkoutName">Name</label>
-                        <input type="text" id="checkoutName" required value="Eleanor Vance" class="checkout-input">
-                    </div>
-                    <div class="form-group">
-                        <label for="checkoutEmail">Email</label>
-                        <input type="email" id="checkoutEmail" required value="eleanor@aurastudio.com" class="checkout-input">
-                    </div>
-                    <div class="form-group">
-                        <label for="checkoutAddress">Delivery Address</label>
-                        <input type="text" id="checkoutAddress" required value="123 Aura Boulevard, Zurich, Switzerland" class="checkout-input">
-                    </div>
-                    <div class="form-row-grid">
-                        <div class="form-group">
-                            <label for="checkoutCard">Card Number</label>
-                            <input type="text" id="checkoutCard" required value="4242 4242 4242 4242" class="checkout-input">
-                        </div>
-                        <div class="form-row-subgrid">
-                            <div class="form-group">
-                                <label for="checkoutExpiry">Expiry</label>
-                                <input type="text" id="checkoutExpiry" required value="12/28" class="checkout-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="checkoutCvv">CVV</label>
-                                <input type="text" id="checkoutCvv" required value="123" class="checkout-input">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="checkout-submit-btn" id="checkoutSubmitBtn">
-                        <span>Confirm Demo Order</span>
-                        <span class="material-symbols-outlined">lock</span>
-                    </button>
-                </form>
             </div>
             
             <!-- Step 3: Success Confirmation -->

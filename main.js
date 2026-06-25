@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFadingObserver();
     initAuraCursor();
     initCheckoutModal();
+    initScrollSpy();
 });
 
 /* ==========================================================================
@@ -1059,15 +1060,15 @@ function initWebGLSlider() {
     window.addEventListener('touchmove', dragMove);
     window.addEventListener('touchend', dragEnd);
 
-    // Keyboard slider controls
-    sliderBar.setAttribute('tabindex', '0');
-    sliderBar.setAttribute('role', 'slider');
-    sliderBar.setAttribute('aria-label', 'Before and After Hydration Slider');
-    sliderBar.setAttribute('aria-valuenow', '50');
-    sliderBar.setAttribute('aria-valuemin', '0');
-    sliderBar.setAttribute('aria-valuemax', '100');
+    // Keyboard slider controls attached to container for better click/focus target size
+    container.setAttribute('tabindex', '0');
+    container.setAttribute('role', 'slider');
+    container.setAttribute('aria-label', 'Before and After Hydration Slider');
+    container.setAttribute('aria-valuenow', '50');
+    container.setAttribute('aria-valuemin', '0');
+    container.setAttribute('aria-valuemax', '100');
 
-    sliderBar.addEventListener('keydown', (e) => {
+    container.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') {
             targetSliderPos = Math.max(0.0, targetSliderPos - 0.05);
             e.preventDefault();
@@ -1075,7 +1076,7 @@ function initWebGLSlider() {
             targetSliderPos = Math.min(1.0, targetSliderPos + 0.05);
             e.preventDefault();
         }
-        sliderBar.setAttribute('aria-valuenow', Math.round(targetSliderPos * 100));
+        container.setAttribute('aria-valuenow', Math.round(targetSliderPos * 100));
         playSynthTone(150 + targetSliderPos * 150, 0.05, 'sine', 0.04);
     });
 
@@ -2623,12 +2624,10 @@ function initCheckoutModal() {
     const activateBtn = document.getElementById('activateMembershipBtn');
     const oneTimeBtn = document.getElementById('oneTimePurchaseBtn');
     
-    const nextBtn = document.getElementById('checkoutNextBtn');
     const form = document.getElementById('checkoutForm');
     const closeFinalBtn = document.getElementById('checkoutCloseFinalBtn');
     
     const step1 = document.getElementById('checkoutStep1');
-    const step2 = document.getElementById('checkoutStep2');
     const step3 = document.getElementById('checkoutStep3');
 
     // Values to update in modal
@@ -2676,9 +2675,8 @@ function initCheckoutModal() {
         if (summaryTotal) summaryTotal.innerText = `$${totalValue.toFixed(2)}`;
 
         // Reset steps
-        step1.classList.add('active');
-        step2.classList.remove('active');
-        step3.classList.remove('active');
+        if (step1) step1.classList.add('active');
+        if (step3) step3.classList.remove('active');
 
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -2710,22 +2708,13 @@ function initCheckoutModal() {
         if (e.target === overlay) closeCheckout();
     });
 
-    // Step 1 to Step 2
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            step1.classList.remove('active');
-            step2.classList.add('active');
-            playSynthTone(330, 0.1, 'sine', 0.1);
-        });
-    }
-
-    // Step 2 submit (Checkout Form) to Step 3
+    // Step 1 Form Submit goes directly to Step 3 (Success)
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            step2.classList.remove('active');
-            step3.classList.add('active');
+            if (step1) step1.classList.remove('active');
+            if (step3) step3.classList.add('active');
             
             // Play gorgeous success chime arpeggio (C5 -> E5 -> G5 -> C6)
             playSynthTone(523.25, 0.3, 'sine', 0.15);
@@ -2734,4 +2723,80 @@ function initCheckoutModal() {
             setTimeout(() => playSynthTone(1046.50, 0.4, 'sine', 0.12), 240);
         });
     }
+}
+
+/* ==========================================================================
+   12. SCROLL SPY ACTIVE STATE TRACKER
+   ========================================================================== */
+function initScrollSpy() {
+    const sections = [
+        { id: 'hero', navId: '#hero' },
+        { id: 'showcase', navId: '#showcase' },
+        { id: 'scanner-section', navId: '#showcase' }, // Map scanner to Science
+        { id: 'slider-section', navId: '#slider-section' },
+        { id: 'ingredients', navId: '#ingredients' },
+        { id: 'ritual-section', navId: '#hero' } // Map ritual routine back to Ritual
+    ];
+
+    const menuLinks = document.querySelectorAll('.nav-links a');
+    const bottomNavLinks = document.querySelectorAll('.mobile-bottom-nav a');
+
+    const updateActiveNav = (activeNavId) => {
+        // Helper to update links
+        const updateLinksList = (links) => {
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === activeNavId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        };
+
+        updateLinksList(menuLinks);
+        updateLinksList(bottomNavLinks);
+    };
+
+    // Use IntersectionObserver to detect active sections
+    const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -40% 0px', // Trigger when section occupies the central region
+        threshold: 0
+    };
+
+    let visibleSections = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleSections.set(entry.target.id, entry.boundingClientRect.top);
+            } else {
+                visibleSections.delete(entry.target.id);
+            }
+        });
+
+        if (visibleSections.size > 0) {
+            // Find section that is closest to the top of the viewport
+            let closestId = '';
+            let minTop = Infinity;
+
+            visibleSections.forEach((top, id) => {
+                if (Math.abs(top) < minTop) {
+                    minTop = Math.abs(top);
+                    closestId = id;
+                }
+            });
+
+            const match = sections.find(s => s.id === closestId);
+            if (match) {
+                updateActiveNav(match.navId);
+            }
+        }
+    }, observerOptions);
+
+    sections.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (el) observer.observe(el);
+    });
 }

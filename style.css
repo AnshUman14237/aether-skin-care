@@ -23,20 +23,20 @@ AETHER LUXURY DESIGN SYSTEM - BRAND CONFIGURATION & SCHEME
     --font-sans: 'DM Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
     
-    /* ELEGANT EDITORIAL COLOR PALETTE (OPTION A: CLINICAL DARK LAB) */
-    --color-bg-canvas: #0b0c0e;         /* Deep dark laboratory slate background */
-    --color-bg-surface: #121418;        /* Glossy dark surface */
-    --color-bg-container: #1b1e24;      /* Secondary dark container */
-    --color-text-primary: #FCFAF7;      /* Clean off-white primary text */
-    --color-text-secondary: #a19e95;    /* Muted gray-gold for secondary copy */
+    /* ELEGANT EDITORIAL COLOR PALETTE (OPTION B: HIGH-END MINIMALISM LIGHT) */
+    --color-bg-canvas: #fff8f3;         /* Warm cream background */
+    --color-bg-surface: #ffffff;        /* Pure white surface */
+    --color-bg-container: #f5ede4;      /* Light cream container */
+    --color-text-primary: #1e1b16;      /* Rich charcoal primary text */
+    --color-text-secondary: #63635f;    /* Muted gray for secondary copy */
     
     /* DUAL-GOLD SYSTEM (aligned with Stitch) */
     --color-accent-gold: #c5a059;       /* Delicate gold for highlights, borders, vectors */
     --color-accent-gold-dark: #775a19;  /* High-contrast gold for readable labels */
     --color-accent-gold-rgb: 197, 160, 89;
     
-    --color-border: rgba(197, 160, 89, 0.15); /* Delicate gold-tinted thin borders */
-    --color-overlay-shadow: rgba(0, 0, 0, 0.4);
+    --color-border: rgba(127, 118, 103, 0.15); /* Gold/charcoal tinted thin borders */
+    --color-overlay-shadow: rgba(45, 41, 38, 0.03); /* Extremely diffused light shadow */
     
     /* SPACING SCALE */
     --spacing-container-max: 1440px;
@@ -150,7 +150,7 @@ html {
 
 body {
     font-family: var(--font-sans);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
 }
 
@@ -220,9 +220,9 @@ button {
 }
 
 .site-header.scrolled {
-    background-color: rgba(250, 248, 245, 0.85);
+    background-color: rgba(255, 248, 243, 0.9);
     backdrop-filter: blur(20px);
-    border-bottom-color: rgba(232, 227, 219, 0.4);
+    border-bottom-color: var(--color-border);
     padding: 16px var(--spacing-margin-desktop);
 }
 
@@ -373,6 +373,14 @@ button {
     transform: translateX(-50%);
 }
 
+.nav-link-item.active {
+    color: var(--color-accent-gold-dark) !important;
+}
+
+.nav-link-item.active::after {
+    width: 60px;
+}
+
 .nav-link-item:hover {
     color: var(--color-accent-gold);
     transform: scale(1.03);
@@ -406,7 +414,7 @@ button {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background-color: #F8F5F0;
+    background-color: var(--color-bg-canvas);
 }
 
 .hero-shader {
@@ -460,6 +468,12 @@ button {
 }
 
 @media(max-width: 991px) {
+    .hero-section {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        padding: 120px 0 80px;
+    }
     .hero-content {
         padding: 0 var(--spacing-margin-mobile);
     }
@@ -533,6 +547,7 @@ button {
     max-width: 580px;
     margin: 0 auto 40px;
     font-weight: 300;
+    line-height: 1.8;
 }
 
 /* Premium Ghost Button */
@@ -546,31 +561,17 @@ button {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    transition: var(--transition-fluid);
+    transition: all 0.4s var(--ease-luxury);
     position: relative;
     overflow: hidden;
 }
 
-.cta-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-text-primary);
-    transition: var(--transition-fluid);
-    transform: translate(-50%, -50%) scale(0);
-    z-index: -1;
-}
-
 .cta-btn:hover {
-    color: var(--color-bg-canvas);
-    border-color: var(--color-text-primary);
-}
-
-.cta-btn:hover::before {
-    transform: translate(-50%, -50%) scale(1.02);
+    background-color: rgba(197, 160, 89, 0.08);
+    border-color: var(--color-accent-gold-dark);
+    color: var(--color-accent-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(119, 90, 25, 0.05);
 }
 
 /* Scroll indicator */
@@ -824,7 +825,7 @@ button {
     color: var(--color-text-secondary);
     font-size: 1rem;
     font-weight: 300;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
 /* ==========================================================================
@@ -1068,7 +1069,7 @@ button {
     color: var(--color-text-secondary);
     font-size: 0.9rem;
     font-weight: 300;
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
 /* ==========================================================================
@@ -1165,6 +1166,7 @@ button {
     font-size: 0.9rem;
     font-weight: 300;
     margin-bottom: 32px;
+    line-height: 1.8;
 }
 
 .membership-options {
@@ -1456,8 +1458,9 @@ button {
 .checkout-btn {
     width: 100%;
     padding: 20px;
-    background-color: var(--color-text-primary);
-    color: var(--color-bg-canvas);
+    border: 1px solid var(--color-text-primary);
+    background-color: transparent;
+    color: var(--color-text-primary);
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1466,11 +1469,15 @@ button {
     justify-content: center;
     align-items: center;
     gap: 12px;
-    transition: var(--transition-fluid);
+    transition: all 0.4s var(--ease-luxury);
 }
 
 .checkout-btn:hover {
-    background-color: var(--color-accent-gold);
+    background-color: rgba(197, 160, 89, 0.08);
+    border-color: var(--color-accent-gold-dark);
+    color: var(--color-accent-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(119, 90, 25, 0.05);
 }
 
 .one-time-purchase-btn {
@@ -1563,6 +1570,7 @@ button {
     color: var(--color-text-secondary);
     margin-bottom: 24px;
     font-weight: 300;
+    line-height: 1.8;
 }
 
 .newsletter-form {
@@ -1651,7 +1659,7 @@ button {
     }
     
     .mobile-nav-item.active {
-        color: var(--color-accent-gold);
+        color: var(--color-accent-gold-dark);
     }
     
     .mobile-nav-item span.material-symbols-outlined {
@@ -1778,17 +1786,20 @@ button {
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
-    transition: var(--transition-fluid);
+    transition: all 0.4s var(--ease-luxury);
 }
 
 .scanner-trigger-btn:hover {
-    background-color: var(--color-text-primary);
-    color: var(--color-bg-canvas);
+    background-color: rgba(197, 160, 89, 0.08);
+    border-color: var(--color-accent-gold-dark);
+    color: var(--color-accent-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(119, 90, 25, 0.05);
 }
 
 .scanner-trigger-btn.active .scanner-icon-spin {
@@ -2551,10 +2562,9 @@ input:focus-visible,
 .checkout-modal {
     background-color: var(--color-bg-canvas);
     border: 1px solid var(--color-border);
-    box-shadow: 0 30px 70px rgba(26, 24, 22, 0.15);
+    box-shadow: 0 30px 70px var(--color-overlay-shadow);
     width: 90%;
-    max-width: 500px;
-    border-radius: 12px;
+    max-width: 800px;
     padding: 40px;
     position: relative;
     transform: translateY(20px) scale(0.98);
@@ -2562,8 +2572,25 @@ input:focus-visible,
     max-height: 90vh;
     overflow-y: auto;
 }
+@media(max-width: 768px) {
+    .checkout-modal {
+        padding: 24px;
+    }
+}
 .checkout-modal-overlay.active .checkout-modal {
     transform: translateY(0) scale(1);
+}
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+@media(min-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 32px;
+        align-items: start;
+    }
 }
 .close-checkout-btn {
     position: absolute;
@@ -2703,14 +2730,28 @@ input:focus-visible,
     gap: 8px;
 }
 .checkout-submit-btn {
-    background-color: var(--color-accent-gold-dark);
-    color: white;
-    border: 1px solid var(--color-accent-gold-dark);
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-text-primary);
     margin-top: 8px;
+    width: 100%;
+    padding: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s var(--ease-luxury);
 }
 .checkout-submit-btn:hover {
-    background-color: transparent;
+    background-color: rgba(197, 160, 89, 0.08);
+    border-color: var(--color-accent-gold-dark);
     color: var(--color-accent-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(119, 90, 25, 0.05);
 }
 .checkout-success-visual {
     display: flex;
@@ -2786,13 +2827,27 @@ input:focus-visible,
     color: var(--color-text-primary);
 }
 .checkout-close-final-btn {
-    background-color: var(--color-text-primary);
-    color: var(--color-bg-canvas);
-    border: 1px solid var(--color-text-primary);
-}
-.checkout-close-final-btn:hover {
     background-color: transparent;
     color: var(--color-text-primary);
+    border: 1px solid var(--color-text-primary);
+    width: 100%;
+    padding: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s var(--ease-luxury);
+}
+.checkout-close-final-btn:hover {
+    background-color: rgba(197, 160, 89, 0.08);
+    border-color: var(--color-accent-gold-dark);
+    color: var(--color-accent-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(119, 90, 25, 0.05);
 }
 
 /* ==========================================================================
@@ -2865,7 +2920,7 @@ input:focus-visible,
 .efficacy-desc {
     font-size: 0.85rem;
     color: var(--color-text-secondary);
-    line-height: 1.6;
+    line-height: 1.8;
     font-weight: 300;
     max-width: 280px;
 }
