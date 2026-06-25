@@ -60,6 +60,108 @@ const BRAND_CONFIG = {
     }
 };
 
+/* ==========================================================================
+   AETHER PRODUCTS CATALOG DATA
+   ========================================================================== */
+const PRODUCTS_DATA = {
+    cleanser: {
+        name: "Purifying Emulsion",
+        volume: "150ml",
+        category: "Milk-to-Gel Prebiotic Cleanser",
+        priceOneTime: 65.00,
+        priceSubscription: 52.00,
+        image: "assets/purifying_emulsion.png",
+        imageWebp: "assets/purifying_emulsion.png",
+        desc: "Ensure your prebiotic cellular barrier is never compromised. Our smart clinical replenishment ensures fresh batches are shipped directly from our laboratory.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$13.00 (20% Off)", price: "$52.00", score: 92, offset: 0.92, aura: 0.85, priceNum: 52.00 },
+            2: { cycle: "Every 45 Days", savings: "$9.75 (15% Off)", price: "$55.25", score: 72, offset: 0.72, aura: 0.55, priceNum: 55.25 },
+            3: { cycle: "Every 60 Days", savings: "$6.50 (10% Off)", price: "$58.50", score: 48, offset: 0.48, aura: 0.30, priceNum: 58.50 }
+        }
+    },
+    toner: {
+        name: "Hydration Primer",
+        volume: "100ml",
+        category: "Osmotic Balancing Treatment",
+        priceOneTime: 58.00,
+        priceSubscription: 46.40,
+        image: "assets/hydration_primer.png",
+        imageWebp: "assets/hydration_primer.png",
+        desc: "Prepare skin channels to optimize deep active serum absorption. Smart replenishment guarantees fresh-batch delivery directly to your door.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$11.60 (20% Off)", price: "$46.40", score: 94, offset: 0.94, aura: 0.90, priceNum: 46.40 },
+            2: { cycle: "Every 45 Days", savings: "$8.70 (15% Off)", price: "$49.30", score: 74, offset: 0.74, aura: 0.60, priceNum: 49.30 },
+            3: { cycle: "Every 60 Days", savings: "$5.80 (10% Off)", price: "$52.20", score: 50, offset: 0.50, aura: 0.35, priceNum: 52.20 }
+        }
+    },
+    serum: {
+        name: "Aether Active Serum",
+        volume: "30ml",
+        category: "Cellular Renewal Oil",
+        priceOneTime: 90.00,
+        priceSubscription: 72.00,
+        image: "assets/drawer_product.png",
+        imageWebp: "assets/drawer_product.webp",
+        desc: "Ensure your cellular cycle is never interrupted. Our smart delivery ensures fresh batches are shipped directly from our lab to your door.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$18.00 (20% Off)", price: "$72.00", score: 98, offset: 0.98, aura: 1.00, priceNum: 72.00 },
+            2: { cycle: "Every 45 Days", savings: "$13.50 (15% Off)", price: "$76.50", score: 78, offset: 0.78, aura: 0.65, priceNum: 76.50 },
+            3: { cycle: "Every 60 Days", savings: "$9.00 (10% Off)", price: "$81.00", score: 55, offset: 0.55, aura: 0.35, priceNum: 81.00 }
+        }
+    },
+    cream: {
+        name: "Lipid Seal Cream",
+        volume: "50ml",
+        category: "Bio-Mimetic Lipid Matrix",
+        priceOneTime: 85.00,
+        priceSubscription: 68.00,
+        image: "assets/lipid_cream.png",
+        imageWebp: "assets/lipid_cream.png",
+        desc: "Lock in core active molecules with a protective, breathable barrier matrix. Replenishment delivers clean cellular protection without pause.",
+        ticks: {
+            1: { cycle: "Every 30 Days", savings: "$17.00 (20% Off)", price: "$68.00", score: 95, offset: 0.95, aura: 0.95, priceNum: 68.00 },
+            2: { cycle: "Every 45 Days", savings: "$12.75 (15% Off)", price: "$72.25", score: 75, offset: 0.75, aura: 0.62, priceNum: 72.25 },
+            3: { cycle: "Every 60 Days", savings: "$8.50 (10% Off)", price: "$76.50", score: 52, offset: 0.52, aura: 0.32, priceNum: 76.50 }
+        }
+    }
+};
+
+let currentDrawerProductId = "serum";
+
+function loadProductIntoDrawer(productId) {
+    const prodData = PRODUCTS_DATA[productId];
+    if (!prodData) return;
+
+    currentDrawerProductId = productId;
+
+    // Update Text
+    const drawerTitle = document.querySelector('.drawer-title');
+    const drawerDesc = document.getElementById('drawerDescription');
+    const drawerMiniName = document.getElementById('drawerProductMiniName');
+    const originalPriceText = document.getElementById('originalPriceText');
+    const memberPriceText = document.getElementById('memberPriceText');
+    const oneTimeBtn = document.getElementById('oneTimePurchaseBtn');
+
+    if (drawerTitle) drawerTitle.innerText = `${prodData.name}`;
+    if (drawerDesc) drawerDesc.innerText = prodData.desc;
+    if (drawerMiniName) drawerMiniName.innerText = `${prodData.name} (${prodData.volume})`;
+    if (originalPriceText) originalPriceText.innerText = `$${prodData.priceOneTime.toFixed(2)}`;
+    if (memberPriceText) memberPriceText.innerText = `$${prodData.priceSubscription.toFixed(2)}`;
+    if (oneTimeBtn) oneTimeBtn.innerText = `Or Buy Once for $${prodData.priceOneTime.toFixed(2)}`;
+
+    // Update Images
+    const webpSource = document.getElementById('drawerProductWebp');
+    const imgTag = document.getElementById('drawerProductImg');
+
+    if (webpSource) {
+        webpSource.setAttribute('srcset', prodData.imageWebp);
+    }
+    if (imgTag) {
+        imgTag.setAttribute('src', prodData.image);
+        imgTag.setAttribute('alt', `${prodData.name} Thumbnail`);
+    }
+}
+
 /* Apply BRAND_CONFIG values to DOM elements on load */
 function applyBrandConfig() {
     // Brand Name
@@ -1551,16 +1653,34 @@ function initSubscriptionDrawer() {
 
     const memberPrice = document.getElementById('memberPriceText');
 
-    // Open Drawer
+    // Open Drawer (General Triggers default to flagship Serum)
     triggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
+            loadProductIntoDrawer('serum');
             overlay.classList.add('active');
             drawer.classList.add('active');
             document.body.style.overflow = 'hidden'; // Stop background scroll
             
             // Trigger visual visualizer entrance
             updateSavingsVisuals(parseInt(sliderInput.value));
+        });
+    });
+
+    // Bind all Collections Grid CTA Buttons
+    const gridButtons = document.querySelectorAll('.product-card-cta-btn');
+    gridButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const productId = btn.getAttribute('data-product-id');
+            loadProductIntoDrawer(productId);
+            overlay.classList.add('active');
+            drawer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateSavingsVisuals(parseInt(sliderInput.value));
+            
+            // Play slide open tone
+            playSynthTone(280 + Math.random() * 40, 0.15, 'sine', 0.1);
         });
     });
 
@@ -1605,28 +1725,15 @@ function initSubscriptionDrawer() {
             }
         });
 
-        if (step === 1) { // 30 Days
-            offset = totalCircumference * (1 - 0.98); // 98%
-            scoreText = "98%";
-            cycleText = "Every 30 Days";
-            savingsText = "$18.00 (20% Off)";
-            auraScale = 1.0;
-            memberPriceText = "$72.00";
-        } else if (step === 2) { // 45 Days
-            offset = totalCircumference * (1 - 0.78); // 78%
-            scoreText = "78%";
-            cycleText = "Every 45 Days";
-            savingsText = "$13.50 (15% Off)";
-            auraScale = 0.65;
-            memberPriceText = "$76.50";
-        } else { // 60 Days
-            offset = totalCircumference * (1 - 0.55); // 55%
-            scoreText = "55%";
-            cycleText = "Every 60 Days";
-            savingsText = "$9.00 (10% Off)";
-            auraScale = 0.35;
-            memberPriceText = "$81.00";
-        }
+        const prodData = PRODUCTS_DATA[currentDrawerProductId] || PRODUCTS_DATA['serum'];
+        const tick = prodData.ticks[step];
+
+        offset = totalCircumference * (1 - tick.offset);
+        scoreText = `${tick.score}%`;
+        cycleText = tick.cycle;
+        savingsText = tick.savings;
+        auraScale = tick.aura;
+        memberPriceText = tick.price;
 
         // Apply visual updates with smooth transition CSS
         progressRing.style.strokeDashoffset = offset;
@@ -2645,30 +2752,26 @@ function initCheckoutModal() {
         if (subDrawer) subDrawer.classList.remove('active');
         if (subOverlay) subOverlay.classList.remove('active');
 
-        // Set values based on choice
-        let priceValue = 90.0;
+        // Set values dynamically based on selected product and frequency
+        const prodData = PRODUCTS_DATA[currentDrawerProductId] || PRODUCTS_DATA['serum'];
+        let priceValue = prodData.priceOneTime;
         let typeText = "One-time Purchase";
         
         if (isMembership) {
             // Read from frequency range selector
             const freqInput = document.getElementById('frequencyRangeInput');
             const freq = freqInput ? parseInt(freqInput.value) : 1;
+            const tick = prodData.ticks[freq];
             
-            if (freq === 1) {
-                priceValue = 72.0;
-                typeText = "Glow Membership (Every 30 Days)";
-            } else if (freq === 2) {
-                priceValue = 76.5;
-                typeText = "Glow Membership (Every 45 Days)";
-            } else {
-                priceValue = 81.0;
-                typeText = "Glow Membership (Every 60 Days)";
-            }
+            priceValue = tick.priceNum;
+            typeText = `${prodData.name} Glow Membership (${tick.cycle})`;
         }
 
         const taxValue = parseFloat((priceValue * 0.08).toFixed(2));
         const totalValue = parseFloat((priceValue + taxValue).toFixed(2));
 
+        const summaryProductName = document.getElementById('summaryProductName');
+        if (summaryProductName) summaryProductName.innerText = `${prodData.name} (${prodData.volume})`;
         if (summaryPrice) summaryPrice.innerText = `$${priceValue.toFixed(2)}`;
         if (summaryType) summaryType.innerText = typeText;
         if (summaryTax) summaryTax.innerText = `$${taxValue.toFixed(2)}`;
@@ -2735,6 +2838,7 @@ function initScrollSpy() {
         { id: 'scanner-section', navId: '#showcase' }, // Map scanner to Science
         { id: 'slider-section', navId: '#slider-section' },
         { id: 'ingredients', navId: '#ingredients' },
+        { id: 'collection', navId: '#collection' },
         { id: 'ritual-section', navId: '#hero' } // Map ritual routine back to Ritual
     ];
 

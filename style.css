@@ -2937,6 +2937,180 @@ input:focus-visible,
     }
 }
 
+/* ==========================================================================
+   AETHER RITUAL COLLECTION SECTION
+   ========================================================================== */
+.collection-section {
+    padding: var(--spacing-section-gap) var(--spacing-margin-desktop);
+    background-color: var(--color-bg-canvas);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.collection-container {
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.collection-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+
+@media(min-width: 576px) {
+    .collection-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+@media(min-width: 992px) {
+    .collection-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+}
+
+/* Individual Product Cards */
+.product-card {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    transition: border-color 0.6s var(--ease-luxury), transform 0.6s var(--ease-luxury);
+}
+
+.product-card:hover {
+    border-color: rgba(var(--color-accent-gold-rgb), 0.45);
+    transform: translateY(-8px);
+}
+
+.product-card-visual {
+    position: relative;
+    background-color: #0b0c0e; /* Matte background for products */
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.product-card-img {
+    max-width: 75%;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.8s var(--ease-luxury);
+}
+
+.product-card:hover .product-card-img {
+    transform: scale(1.08);
+}
+
+.product-card-number {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: rgba(252, 250, 247, 0.3);
+    font-weight: 300;
+}
+
+.product-card-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-card-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.product-spec {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-accent-gold-dark);
+    font-weight: 400;
+    border: 1px solid rgba(var(--color-accent-gold-rgb), 0.18);
+    padding: 2px 8px;
+}
+
+.product-card-title {
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.product-card-desc {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-weight: 300;
+    flex-grow: 1;
+}
+
+.product-card-purchase {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(197, 160, 89, 0.08);
+}
+
+.product-card-price {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.product-card-cta-btn {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--color-accent-gold);
+    border: 1px solid var(--color-accent-gold);
+    padding: 8px 16px;
+    transition: all 0.4s var(--ease-luxury);
+}
+
+.product-card-cta-btn:hover,
+.product-card-cta-btn:focus {
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-canvas);
+    outline: none;
+}
+
+@media(max-width: 768px) {
+    .collection-section {
+        padding: 80px var(--spacing-margin-mobile);
+    }
+    .collection-header {
+        margin-bottom: 40px;
+    }
+}
+
 /* Sharp Corners Enforced (Stitch Design System) */
 button, 
 input, 
@@ -2956,6 +3130,8 @@ input,
 .ritual-card, 
 .ingredient-card, 
 .drawer-product-card,
+.product-card,
+.product-card-cta-btn,
 .apothecary-badge {
     border-radius: 0 !important;
 }
@@ -2965,6 +3141,7 @@ input,
 #scanner-section, 
 #slider-section, 
 #ingredients, 
+#collection,
 #ritual-section,
 .site-footer {
     content-visibility: auto;
