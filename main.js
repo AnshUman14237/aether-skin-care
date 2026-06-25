@@ -296,18 +296,18 @@ function initHeroShader() {
             
             float combinedFlow = n1 * 0.6 + n2 * 0.4;
             
-            // Base Skin Neutral Shades (Option B: Light Warm Cream Lab)
-            vec3 colorBg = vec3(1.0, 0.973, 0.953);      // Warm cream #fff8f3
+            // Base Skin Neutral Shades (Clinical Dark Lab)
+            vec3 colorBg = vec3(0.043, 0.047, 0.055);    // Deep dark slate
             vec3 colorGold = vec3(0.773, 0.627, 0.349);  // Subtle gold highlight
-            vec3 colorWhite = vec3(1.0, 1.0, 1.0);       // Pure white reflection
+            vec3 colorWhite = vec3(0.15, 0.17, 0.2);     // Low-light reflection
             
-            // Blend colors using noise flow (low opacity highlights to maintain light canvas legibility)
-            vec3 color = mix(colorBg, colorGold, smoothstep(-0.2, 1.2, combinedFlow) * 0.04);
-            color = mix(color, colorWhite, smoothstep(0.2, 1.2, combinedFlow) * 0.03);
+            // Blend colors using noise flow
+            vec3 color = mix(colorBg, colorGold, smoothstep(-0.2, 1.2, combinedFlow) * 0.15);
+            color = mix(color, colorWhite, smoothstep(0.2, 1.2, combinedFlow) * 0.08);
             
             // Add subtle luxury ambient glow centered
             float centerGlow = 1.0 - length(st) * 0.3;
-            color += colorGold * max(centerGlow, 0.0) * 0.01;
+            color += colorGold * max(centerGlow, 0.0) * 0.04;
             
             gl_FragColor = vec4(color, 1.0);
         }
